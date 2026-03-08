@@ -1,0 +1,36 @@
+// Write a program in C to find the second largest element in an array.
+#include <stdio.h>
+int main(){
+    int n;
+    printf("Enter number of elements in an array: ");
+    scanf("%d",&n);
+    int arr[n];
+    printf("Enter elements: ");
+    for(int i=0;i<n;i++){
+        scanf("%d",&arr[i]);
+    }
+    if(n<2){
+        printf("Array must have at least two elements.\n");
+        return 0;
+    }
+    int lar, Slar;
+    if(arr[0]>arr[1]){
+        lar=arr[0];
+        Slar=arr[1];
+    }
+    else{
+        lar=arr[1];
+        Slar=arr[0];
+    }
+    for(int i=2;i<n;i++){
+        if(arr[i]>lar){
+            Slar=lar;
+            lar=arr[i];
+        }
+        else if(arr[i]>Slar && arr[i]!=lar){
+            Slar=arr[i];
+        }
+    }
+    printf("Second largest element is %d\n",Slar);
+    return 0;
+}
