@@ -1,0 +1,29 @@
+// Write a program in C to delete an element at a desired position from an array.
+#include <stdio.h>
+int main(){
+    int n;
+    printf("Enter number of elements in an array: ");
+    scanf("%d",&n);
+    int arr[n];
+    printf("Enter elements: ");
+    for(int i=0;i<n;i++){
+        scanf("%d",&arr[i]);
+    }
+    int pos;
+    printf("Enter the position to delete (1 to %d): ",n);
+    scanf("%d",&pos);
+    if(pos<1 || pos>n){
+        printf("Invalid position\n");
+        return 0;
+    }
+    for(int i=pos-1;i<n-1;i++){
+        arr[i]=arr[i+1];
+    }
+    n--;
+    printf("Array after deletion: ");
+    for(int i=0;i<n;i++){
+        printf("%d ",arr[i]);
+    }
+    printf("\n");
+    return 0;
+}
