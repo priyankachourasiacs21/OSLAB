@@ -1,0 +1,107 @@
+#include <stdio.h>
+
+void round_robin(int n,int AT[],int BT[],int tq){
+
+    int CT[n],TAT[n],WT[n],RT[n];
+    int temp_BT[n],visited[n],queue[100];
+    int front=0,rear=0;
+
+    for(int i=0;i<n;i++){
+        temp_BT[i]=BT[i];
+        visited[i]=0;
+        RT[i]=-1;
+    }
+
+    int t=0,count=0;
+
+    for(int i=0;i<n;i++){
+        if(AT[i]==0){
+            queue[rear++]=i;
+            visited[i]=1;
+        }
+    }
+
+    while(count<n){
+
+        if(front==rear){
+            t++;
+            for(int i=0;i<n;i++){
+                if(visited[i]==0 && AT[i]<=t){
+                    queue[rear++]=i;
+                    visited[i]=1;
+                }
+            }
+            continue;
+        }
+
+        int i=queue[front++];
+
+        if(RT[i]==-1)
+            RT[i]=t-AT[i];
+
+        if(temp_BT[i]>tq){
+            temp_BT[i]-=tq;
+            t+=tq;
+        }
+        else{
+            t+=temp_BT[i];
+            temp_BT[i]=0;
+
+            CT[i]=t;
+            TAT[i]=CT[i]-AT[i];
+            WT[i]=TAT[i]-BT[i];
+
+            count++;
+        }
+
+        for(int j=0;j<n;j++){
+            if(visited[j]==0 && AT[j]<=t){
+                queue[rear++]=j;
+                visited[j]=1;
+            }
+        }
+
+        if(temp_BT[i]>0)
+            queue[rear++]=i;
+    }
+
+    float avgTAT=0,avgWT=0,avgRT=0;
+
+    printf("\nRound Robin Result:\n");
+    printf("Process\tAT\tBT\tCT\tTAT\tWT\tRT\n");
+
+    for(int i=0;i<n;i++){
+        printf("P%d\t%d\t%d\t%d\t%d\t%d\t%d\n",
+        i+1,AT[i],BT[i],CT[i],TAT[i],WT[i],RT[i]);
+
+        avgTAT+=TAT[i];
+        avgWT+=WT[i];
+        avgRT+=RT[i];
+    }
+
+    printf("\nAverage TAT = %.2f",avgTAT/n);
+    printf("\nAverage WT  = %.2f",avgWT/n);
+    printf("\nAverage RT  = %.2f\n",avgRT/n);
+}
+
+int main(){
+
+    int n;
+    printf("Enter number of processes: ");
+    scanf("%d",&n);
+
+    int AT[n],BT[n];
+
+    for(int i=0;i<n;i++){
+        printf("Enter AT and BT for P%d: ",i+1);
+        scanf("%d%d",&AT[i],&BT[i]);
+    }
+
+    int tq;
+    printf("Enter Time Quantum: ");
+    scanf("%d",&tq);
+
+    round_robin(n,AT,BT,tq);
+
+    return 0;
+}
